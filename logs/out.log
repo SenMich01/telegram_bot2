@@ -1,0 +1,76 @@
+2025-11-25 09:50:25 +01:00: 2025-11-25T08:50:25.744Z [INFO]: 📅 Scheduled daily tips job configured: */1 * * * * (Africa/Lagos timezone)
+2025-11-25 09:50:25 +01:00: 2025-11-25T08:50:25.747Z [INFO]: 🕐 Current server time: 11/25/2025, 9:50:25 AM
+2025-11-25 09:50:25 +01:00: 2025-11-25T08:50:25.747Z [INFO]: ⚠️ NOTE: Change cronSchedule to "0 10 * * *" for production (10:00 AM daily)
+2025-11-25 09:50:25 +01:00: 2025-11-25T08:50:25.748Z [INFO]: 🚀 Bot started successfully!
+2025-11-25 09:50:25 +01:00: 2025-11-25T08:50:25.748Z [INFO]: 📊 Daily tips will be sent at 10:00 AM every day
+2025-11-25 09:50:25 +01:00: 2025-11-25T08:50:25.794Z [INFO]: ✅ Express keep-alive server started on port 8080
+2025-11-25 09:51:00 +01:00: 2025-11-25T08:51:00.816Z [INFO]: ⏰ Cron job triggered at 11/25/2025, 9:51:00 AM
+2025-11-25 09:51:00 +01:00: 2025-11-25T08:51:00.817Z [INFO]: 📊 Fetching daily tips for scheduled broadcast...
+2025-11-25 09:51:03 +01:00: 2025-11-25T08:51:03.363Z [INFO]: ✅ Message sent to user 7417782185
+2025-11-25 09:51:03 +01:00: 2025-11-25T08:51:03.364Z [INFO]: ✅ Daily tips sent successfully
+2025-11-25 09:51:44 +01:00: 2025-11-25T08:51:44.103Z [INFO]: 📊 Fetching daily tips for scheduled broadcast...
+2025-11-25 09:51:46 +01:00: 2025-11-25T08:51:46.087Z [INFO]: ✅ Message sent to user 7417782185
+2025-11-25 09:51:46 +01:00: 2025-11-25T08:51:46.087Z [INFO]: ✅ Daily tips sent successfully
+2025-11-25 09:52:00 +01:00: 2025-11-25T08:52:00.903Z [INFO]: ⏰ Cron job triggered at 11/25/2025, 9:52:00 AM
+2025-11-25 09:52:00 +01:00: 2025-11-25T08:52:00.905Z [INFO]: 📊 Fetching daily tips for scheduled broadcast...
+2025-11-25 09:52:08 +01:00: 2025-11-25T08:52:08.068Z [INFO]: ✅ Message sent to user 7417782185
+2025-11-25 09:52:08 +01:00: 2025-11-25T08:52:08.069Z [INFO]: ✅ Daily tips sent successfully
+2025-11-25 09:53:01 +01:00: 2025-11-25T08:53:01.001Z [INFO]: ⏰ Cron job triggered at 11/25/2025, 9:53:00 AM
+2025-11-25 09:53:01 +01:00: 2025-11-25T08:53:01.008Z [INFO]: 📊 Fetching daily tips for scheduled broadcast...
+2025-11-25 09:53:02 +01:00: 2025-11-25T08:53:02.449Z [INFO]: ✅ Message sent to user 7417782185
+2025-11-25 09:53:02 +01:00: 2025-11-25T08:53:02.450Z [INFO]: ✅ Daily tips sent successfully
+2025-11-25 09:53:26 +01:00: 2025-11-25T08:53:26.620Z [INFO]: 📅 Scheduled daily tips job configured: */1 * * * * (Africa/Lagos timezone)
+2025-11-25 09:53:26 +01:00: 2025-11-25T08:53:26.622Z [INFO]: 🕐 Current server time: 11/25/2025, 9:53:26 AM
+2025-11-25 09:53:26 +01:00: 2025-11-25T08:53:26.623Z [INFO]: ⚠️ NOTE: Change cronSchedule to "0 10 * * *" for production (10:00 AM daily)
+2025-11-25 09:53:26 +01:00: 2025-11-25T08:53:26.623Z [INFO]: 🚀 Bot started successfully!
+2025-11-25 09:53:26 +01:00: 2025-11-25T08:53:26.623Z [INFO]: 📊 Daily tips will be sent at 10:00 AM every day
+2025-11-25 09:53:26 +01:00: 2025-11-25T08:53:26.664Z [INFO]: ✅ Express keep-alive server started on port 8080
+2025-11-25 09:54:00 +01:00: 2025-11-25T08:54:00.671Z [INFO]: ⏰ Cron job triggered at 11/25/2025, 9:54:00 AM
+2025-11-25 09:54:00 +01:00: 2025-11-25T08:54:00.673Z [INFO]: 📊 Fetching daily tips for scheduled broadcast...
+2025-11-25 09:54:03 +01:00: 2025-11-25T08:54:03.098Z [INFO]: ✅ Message sent to user 7417782185
+2025-11-25 09:54:03 +01:00: 2025-11-25T08:54:03.099Z [INFO]: ✅ Daily tips sent successfully
+2025-11-25 09:55:00 +01:00: 2025-11-25T08:55:00.776Z [INFO]: ⏰ Cron job triggered at 11/25/2025, 9:55:00 AM
+2025-11-25 09:55:00 +01:00: 2025-11-25T08:55:00.780Z [INFO]: 📊 Fetching daily tips for scheduled broadcast...
+2025-11-25 09:55:02 +01:00: 2025-11-25T08:55:02.438Z [INFO]: ✅ Message sent to user 7417782185
+2025-11-25 09:55:02 +01:00: 2025-11-25T08:55:02.439Z [INFO]: ✅ Daily tips sent successfully
+2025-11-25 09:56:00 +01:00: 2025-11-25T08:56:00.868Z [INFO]: ⏰ Cron job triggered at 11/25/2025, 9:56:00 AM
+2025-11-25 09:56:00 +01:00: 2025-11-25T08:56:00.870Z [INFO]: 📊 Fetching daily tips for scheduled broadcast...
+2025-11-25 09:56:03 +01:00: 2025-11-25T08:56:03.714Z [INFO]: ✅ Message sent to user 7417782185
+2025-11-25 09:56:03 +01:00: 2025-11-25T08:56:03.715Z [INFO]: ✅ Daily tips sent successfully
+2025-11-25 09:57:00 +01:00: 2025-11-25T08:57:00.967Z [INFO]: ⏰ Cron job triggered at 11/25/2025, 9:57:00 AM
+2025-11-25 09:57:00 +01:00: 2025-11-25T08:57:00.969Z [INFO]: 📊 Fetching daily tips for scheduled broadcast...
+2025-11-25 09:57:02 +01:00: 2025-11-25T08:57:02.631Z [INFO]: ✅ Message sent to user 7417782185
+2025-11-25 09:57:02 +01:00: 2025-11-25T08:57:02.632Z [INFO]: ✅ Daily tips sent successfully
+2025-11-25 09:57:46 +01:00: 2025-11-25T08:57:46.673Z [INFO]: 📅 Scheduled daily tips job configured: 0 10 * * * (Africa/Lagos timezone)
+2025-11-25 09:57:46 +01:00: 2025-11-25T08:57:46.674Z [INFO]: 🕐 Current server time: 11/25/2025, 9:57:46 AM
+2025-11-25 09:57:46 +01:00: 2025-11-25T08:57:46.674Z [INFO]: ⚠️ NOTE: Change cronSchedule to "0 10 * * *" for production (10:00 AM daily)
+2025-11-25 09:57:46 +01:00: 2025-11-25T08:57:46.675Z [INFO]: 🚀 Bot started successfully!
+2025-11-25 09:57:46 +01:00: 2025-11-25T08:57:46.675Z [INFO]: 📊 Daily tips will be sent at 10:00 AM every day
+2025-11-25 09:57:46 +01:00: 2025-11-25T08:57:46.717Z [INFO]: ✅ Express keep-alive server started on port 8080
+2025-11-25 09:58:59 +01:00: 2025-11-25T08:58:59.119Z [INFO]: 📅 Scheduled daily tips job configured: 0 10 * * * (Africa/Lagos timezone)
+2025-11-25 09:58:59 +01:00: 2025-11-25T08:58:59.121Z [INFO]: 🕐 Current server time: 11/25/2025, 9:58:59 AM
+2025-11-25 09:58:59 +01:00: 2025-11-25T08:58:59.121Z [INFO]: ⚠️ NOTE: Change cronSchedule to "0 10 * * *" for production (10:00 AM daily)
+2025-11-25 09:58:59 +01:00: 2025-11-25T08:58:59.121Z [INFO]: 🚀 Bot started successfully!
+2025-11-25 09:58:59 +01:00: 2025-11-25T08:58:59.121Z [INFO]: 📊 Daily tips will be sent at 10:00 AM every day
+2025-11-25 09:58:59 +01:00: 2025-11-25T08:58:59.159Z [INFO]: ✅ Express keep-alive server started on port 8080
+2025-11-25 09:59:26 +01:00: 2025-11-25T08:59:26.556Z [INFO]: 📝 /testdaily command received from user 7417782185
+2025-11-25 09:59:27 +01:00: 2025-11-25T08:59:27.620Z [INFO]: 🧪 Manually triggering daily tips...
+2025-11-25 09:59:27 +01:00: 2025-11-25T08:59:27.621Z [INFO]: 📊 Fetching daily tips for scheduled broadcast...
+2025-11-25 09:59:32 +01:00: 2025-11-25T08:59:32.775Z [INFO]: ✅ Message sent to user 7417782185
+2025-11-25 09:59:32 +01:00: 2025-11-25T08:59:32.775Z [INFO]: ✅ Daily tips sent successfully
+2025-11-25 10:00:00 +01:00: 2025-11-25T09:00:00.204Z [INFO]: ⏰ Cron job triggered at 11/25/2025, 10:00:00 AM
+2025-11-25 10:00:00 +01:00: 2025-11-25T09:00:00.204Z [INFO]: 📊 Fetching daily tips for scheduled broadcast...
+2025-11-25 10:00:05 +01:00: 2025-11-25T09:00:05.231Z [INFO]: ✅ Message sent to user 7417782185
+2025-11-25 10:00:05 +01:00: 2025-11-25T09:00:05.231Z [INFO]: ✅ Daily tips sent successfully
+2025-11-26 03:12:44 +01:00: 2025-11-26T02:12:44.298Z [INFO]: 📅 Scheduled daily tips job configured: 0 10 * * * (Africa/Lagos timezone)
+2025-11-26 03:12:44 +01:00: 2025-11-26T02:12:44.301Z [INFO]: 🕐 Current server time: 11/26/2025, 3:12:44 AM
+2025-11-26 03:12:44 +01:00: 2025-11-26T02:12:44.301Z [INFO]: ⚠️ NOTE: Change cronSchedule to "0 10 * * *" for production (10:00 AM daily)
+2025-11-26 03:12:44 +01:00: 2025-11-26T02:12:44.301Z [INFO]: 🚀 Bot started successfully!
+2025-11-26 03:12:44 +01:00: 2025-11-26T02:12:44.301Z [INFO]: 📊 Daily tips will be sent at 10:00 AM every day
+2025-11-26 03:12:44 +01:00: 2025-11-26T02:12:44.346Z [INFO]: ✅ Express keep-alive server started on port 8080
+2025-11-27 03:37:37 +01:00: 2025-11-27T02:37:37.520Z [INFO]: 📅 Scheduled daily tips job configured: 0 10 * * * (Africa/Lagos timezone)
+2025-11-27 03:37:37 +01:00: 2025-11-27T02:37:37.523Z [INFO]: 🕐 Current server time: 11/27/2025, 3:37:37 AM
+2025-11-27 03:37:37 +01:00: 2025-11-27T02:37:37.523Z [INFO]: ⚠️ NOTE: Change cronSchedule to "0 10 * * *" for production (10:00 AM daily)
+2025-11-27 03:37:37 +01:00: 2025-11-27T02:37:37.523Z [INFO]: 🚀 Bot started successfully!
+2025-11-27 03:37:37 +01:00: 2025-11-27T02:37:37.523Z [INFO]: 📊 Daily tips will be sent at 10:00 AM every day
+2025-11-27 03:37:37 +01:00: 2025-11-27T02:37:37.567Z [INFO]: ✅ Express keep-alive server started on port 8080
