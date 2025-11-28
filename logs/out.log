@@ -74,3 +74,19 @@
 2025-11-27 03:37:37 +01:00: 2025-11-27T02:37:37.523Z [INFO]: 🚀 Bot started successfully!
 2025-11-27 03:37:37 +01:00: 2025-11-27T02:37:37.523Z [INFO]: 📊 Daily tips will be sent at 10:00 AM every day
 2025-11-27 03:37:37 +01:00: 2025-11-27T02:37:37.567Z [INFO]: ✅ Express keep-alive server started on port 8080
+2025-11-28 02:59:56 +01:00: 2025-11-28T01:59:56.358Z [INFO]: 📅 Scheduled daily tips job configured: 0 10 * * * (Africa/Lagos timezone)
+2025-11-28 02:59:56 +01:00: 2025-11-28T01:59:56.361Z [INFO]: 🕐 Current server time: 11/28/2025, 2:59:56 AM
+2025-11-28 02:59:56 +01:00: 2025-11-28T01:59:56.361Z [INFO]: ⚠️ NOTE: Change cronSchedule to "0 10 * * *" for production (10:00 AM daily)
+2025-11-28 02:59:56 +01:00: 2025-11-28T01:59:56.361Z [INFO]: 🚀 Bot started successfully!
+2025-11-28 02:59:56 +01:00: 2025-11-28T01:59:56.361Z [INFO]: 📊 Daily tips will be sent at 10:00 AM every day
+2025-11-28 02:59:56 +01:00: 2025-11-28T01:59:56.407Z [INFO]: ✅ Express keep-alive server started on port 8080
+2025-11-28 03:00:00 +01:00: 2025-11-28T02:00:00.433Z [INFO]: 📅 Scheduled daily tips job configured: 0 10 * * * (Africa/Lagos timezone)
+2025-11-28 03:00:00 +01:00: 2025-11-28T02:00:00.435Z [INFO]: 🕐 Current server time: 11/28/2025, 3:00:00 AM
+2025-11-28 03:00:00 +01:00: 2025-11-28T02:00:00.435Z [INFO]: ⚠️ NOTE: Change cronSchedule to "0 10 * * *" for production (10:00 AM daily)
+2025-11-28 03:00:00 +01:00: 2025-11-28T02:00:00.436Z [INFO]: 🚀 Bot started successfully!
+2025-11-28 03:00:00 +01:00: 2025-11-28T02:00:00.436Z [INFO]: 📊 Daily tips will be sent at 10:00 AM every day
+2025-11-28 03:00:00 +01:00: 2025-11-28T02:00:00.473Z [INFO]: ✅ Express keep-alive server started on port 8080
+2025-11-28 10:00:00 +01:00: 2025-11-28T09:00:00.759Z [INFO]: ⏰ Cron job triggered at 11/28/2025, 10:00:00 AM
+2025-11-28 10:00:00 +01:00: 2025-11-28T09:00:00.767Z [INFO]: 📊 Fetching daily tips for scheduled broadcast...
+2025-11-28 10:00:06 +01:00: 2025-11-28T09:00:06.216Z [INFO]: ✅ Message sent to user 7417782185
+2025-11-28 10:00:06 +01:00: 2025-11-28T09:00:06.217Z [INFO]: ✅ Daily tips sent successfully

@@ -195,6 +195,16 @@ async function getFreeTips(limit: number = 3): Promise<string[]> {
   return tips.length > 0 ? tips : ['⚠️ Could not parse odds, try again later.'];
 }
 
+// Helper function to shuffle array randomly
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 // NEW: Daily tips from different leagues (La Liga, Serie A, Bundesliga)
 async function getDailyScheduledTips(limit: number = 3): Promise<string[]> {
   // Try multiple leagues for variety
@@ -202,15 +212,24 @@ async function getDailyScheduledTips(limit: number = 3): Promise<string[]> {
     'soccer_spain_la_liga',      // Spanish La Liga
     'soccer_italy_serie_a',      // Italian Serie A
     'soccer_germany_bundesliga', // German Bundesliga
+    'soccer_france_ligue_one',   // French Ligue 1
+    'soccer_brazil_campeonato',  // Brazilian League
   ];
 
+  // Shuffle leagues for random order
+  const shuffledLeagues = shuffleArray(leagues);
   let allTips: string[] = [];
 
-  for (const league of leagues) {
+  for (const league of shuffledLeagues) {
     const events = await fetchOdds(league, ['h2h']);
     
     // Skip if error
     if (Array.isArray(events) && events.length > 0 && typeof events[0] === 'string' && events[0].startsWith('⚠️')) {
+      continue;
+    }
+
+    // Skip if no events
+    if (!Array.isArray(events) || events.length === 0) {
       continue;
     }
 
@@ -219,8 +238,13 @@ async function getDailyScheduledTips(limit: number = 3): Promise<string[]> {
     if (league.includes('la_liga')) leagueName = '🇪🇸 La Liga';
     else if (league.includes('serie_a')) leagueName = '🇮🇹 Serie A';
     else if (league.includes('bundesliga')) leagueName = '🇩🇪 Bundesliga';
+    else if (league.includes('ligue_one')) leagueName = '🇫🇷 Ligue 1';
+    else if (league.includes('brazil')) leagueName = '🇧🇷 Brasileirão';
 
-    for (const game of events.slice(0, 1)) { // Take 1 match per league
+    // Shuffle events and pick random match
+    const shuffledEvents = shuffleArray(events);
+    
+    for (const game of shuffledEvents.slice(0, 1)) { // Take 1 random match per league
       const home = game.home_team || 'Home';
       const away = game.away_team || 'Away';
       const commence = game.commence_time || 'TBD';
@@ -261,8 +285,11 @@ async function getVipTips(limit: number = 3): Promise<string[]> {
     return events as string[];
   }
 
+  // Shuffle for variety
+  const shuffledEvents = shuffleArray(events);
   const tips: string[] = [];
-  for (const game of events.slice(0, limit)) {
+  
+  for (const game of shuffledEvents.slice(0, limit)) {
     const home = game.home_team || 'Home';
     const away = game.away_team || 'Away';
     const commence = game.commence_time || 'TBD';
@@ -787,7 +814,7 @@ bot.command('crontest', async (ctx) => {
 // FIXED: Scheduled job - Send daily tips at 10:00 AM every day
 // For TESTING: Use '*/1 * * * *' to run every minute
 // For PRODUCTION: Use '0 10 * * *' for 10:00 AM daily
-const cronSchedule = '0 10 * * *'; // Runs at 10:00 AM daily // Change this to '0 10 * * *' after testing
+const cronSchedule = '*/1 * * * *';// const cronSchedule = '0 10 * * *';// const cronSchedule = '*/1 * * * *'; // Change this to '0 10 * * *' after testing
 
 const cronJob = cron.schedule(cronSchedule, async () => {
   const now = new Date();
