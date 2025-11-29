@@ -814,7 +814,7 @@ bot.command('crontest', async (ctx) => {
 // FIXED: Scheduled job - Send daily tips at 10:00 AM every day
 // For TESTING: Use '*/1 * * * *' to run every minute
 // For PRODUCTION: Use '0 10 * * *' for 10:00 AM daily
-const cronSchedule = '*/1 * * * *'; // Change this to '0 10 * * *' after testing
+const cronSchedule = '0 10 * * *';// const cronSchedule = '*/1 * * * *'; // Change this to '0 10 * * *' after testing
 
 const cronJob = cron.schedule(cronSchedule, async () => {
   const now = new Date();
