@@ -1,4 +1,135 @@
-import * as fs from 'fs';
+async function getVipTips(limit: number = 3): Promise<string[]> {
+  // Use multiple top leagues for better upcoming match availability
+  const leagues = [
+    'soccer_uefa_champs_league',
+    'soccer_uefa_europa_league',
+    'soccer_epl',
+    'soccer_spain_la_liga',
+    'soccer_italy_serie_a'
+  ];
+
+  let allMatches: any[] = [];
+
+  // Fetch from multiple leagues
+  for (const league of leagues) {
+    const events = await fetchOdds(league, ['totals', 'h2h']);
+    if (Array.isArray(events) && events.length > 0 && typeof events[0] !== 'string') {
+      allMatches = allMatches.concat(events);
+    }
+  }
+
+  if (allMatches.length === 0) {
+    return ['⚠️ VIP odds unavailable right now.'];
+  }
+
+  // Filter for upcoming matches only (within next 7 days)
+  const now = new Date();
+  const sevenDaysFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  
+  const upcomingMatches = allMatches.filter(game => {
+    try {
+      const commenceTime = new Date(game.commence_time);
+      return commenceTime >= now && commenceTime <= sevenDaysFromNow;
+    } catch {
+      return false;
+    }
+  });
+
+  // Sort by date (earliest first) and shuffle similar times for variety
+  upcomingMatches.sort((a, b) => {
+    const timeA = new Date(a.commence_time).getTime();
+    const timeB = new Date(b.commence_time).getTime();
+    return timeA - timeB;
+  });
+
+  // Shuffle for variety while keeping recent matches
+  const shuffledMatches = shuffleArray(upcomingMatches.slice(0, 10));
+  const tips: string[] = [];
+  
+  for (const game of shuffledMatches.slice(0, limit)) {
+    const home = game.home_team || 'Home';
+    const away = game.away_team || 'Away';
+    const commence = game.commence_time || 'TBD';
+
+    let homeOdds = 'N/A';
+    let drawOdds = 'N/A';
+    let awayOdds = 'N/A';
+    
+    // Best over/under bet
+    let bestOverBet = {
+      line: 'N/A',
+      odds: 'N/A',
+      probability: 'N/A',
+      recommendation: 'Over 1.5'
+    };
+
+    try {
+      const bookmakers = game.bookmakers || [];
+      
+      if (bookmakers.length > 0) {
+        // Get match winner odds (h2h)
+        for (const bm of bookmakers) {
+          const h2hMarket = bm.markets?.find((m: any) => m.key === 'h2h');
+          if (h2hMarket && h2hMarket.outcomes) {
+            const outcomes = h2hMarket.outcomes;
+            
+            // Find home, draw, away odds
+            for (const outcome of outcomes) {
+              const name = (outcome.name || '').toLowerCase();
+              if (name === home.toLowerCase()) {
+                homeOdds = safeOddsToStr(outcome.price);
+              } else if (name === 'draw') {
+                drawOdds = safeOddsToStr(outcome.price);
+              } else if (name === away.toLowerCase()) {
+                awayOdds = safeOddsToStr(outcome.price);
+              }
+            }
+            if (homeOdds !== 'N/A' && awayOdds !== 'N/A') break;
+          }
+        }
+
+        // Find BEST over/under bet
+        let bestProbability = 0;
+        
+        for (const bm of bookmakers) {
+          const totalsMarket = bm.markets?.find((m: any) => m.key === 'totals');
+          if (totalsMarket && totalsMarket.outcomes) {
+            for (const outcome of totalsMarket.outcomes) {
+              const name = (outcome.name || '').toLowerCase();
+              if (name.includes('over')) {
+                const line = parseFloat(outcome.point || 0);
+                const odds = parseFloat(outcome.price || 0);
+                
+                // Calculate implied probability
+                const probability = odds > 0 ? (1 / odds) * 100 : 0;
+                
+                // Only consider Over 0.5, 1.5, 2.5, 3.5
+                if ([0.5, 1.5, 2.5, 3.5].includes(line)) {
+                  // Look for high probability bets (>50% implied)
+                  if (probability > bestProbability && probability >= 50) {
+                    bestProbability = probability;
+                    bestOverBet = {
+                      line: line.toString(),
+                      odds: safeOddsToStr(odds),
+                      probability: `${Math.round(probability * 100) / 100}%`,
+                      recommendation: `Over ${line}`
+                    };
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // If no good over bet found, default to safest option
+        if (bestOverBet.line === 'N/A') {
+          // Try to find Over 0.5 as fallback
+          for (const bm of bookmakers) {
+            const totalsMarket = bm.markets?.find((m: any) => m.key === 'totals');
+            if (totalsMarket && totalsMarket.outcomes) {
+              for (const outcome of totalsMarket.outcomes) {
+                const name = (outcome.name || '').toLowerCase();
+                if (name.includesimport * as fs from 'fs';
 import * as path from 'path';
 import { Telegraf, Context, Markup } from 'telegraf';
 import express from 'express';
@@ -294,54 +425,161 @@ async function getVipTips(limit: number = 3): Promise<string[]> {
     const away = game.away_team || 'Away';
     const commence = game.commence_time || 'TBD';
 
-    let foundTotals = false;
-    let line = 'N/A';
-    let price = 'N/A';
+    let homeOdds = 'N/A';
+    let drawOdds = 'N/A';
+    let awayOdds = 'N/A';
+    
+    // Win percentages
+    let homeWinPercent = 'N/A';
+    let drawPercent = 'N/A';
+    let awayWinPercent = 'N/A';
+    
+    // Best over bet analysis
+    let bestOverBet = {
+      line: 'N/A',
+      odds: 'N/A',
+      probability: 'N/A',
+      recommendation: 'N/A',
+      confidence: 0
+    };
+
     try {
       const bookmakers = game.bookmakers || [];
-      for (const bm of bookmakers) {
-        for (const m of bm.markets || []) {
-          if (m.key === 'totals') {
-            for (const o of m.outcomes || []) {
-              const name = (o.name || '').toLowerCase();
-              if (name.includes('over')) {
-                line = safeOddsToStr(o.point || 'N/A');
-                price = safeOddsToStr(o.price || 'N/A');
-                foundTotals = true;
-                break;
+      
+      if (bookmakers.length > 0) {
+        // Get match winner odds and calculate win percentages
+        for (const bm of bookmakers) {
+          const h2hMarket = bm.markets?.find((m: any) => m.key === 'h2h');
+          if (h2hMarket && h2hMarket.outcomes) {
+            const outcomes = h2hMarket.outcomes;
+            
+            for (const outcome of outcomes) {
+              const name = (outcome.name || '').toLowerCase();
+              const price = parseFloat(outcome.price || 0);
+              const probability = price > 0 ? (1 / price) * 100 : 0;
+              const percentStr = `${Math.round(probability * 10) / 10}%`;
+              
+              if (name === home.toLowerCase()) {
+                homeOdds = safeOddsToStr(price);
+                homeWinPercent = percentStr;
+              } else if (name === 'draw') {
+                drawOdds = safeOddsToStr(price);
+                drawPercent = percentStr;
+              } else if (name === away.toLowerCase()) {
+                awayOdds = safeOddsToStr(price);
+                awayWinPercent = percentStr;
               }
             }
-            if (foundTotals) break;
+            if (homeOdds !== 'N/A' && awayOdds !== 'N/A') break;
           }
         }
-        if (foundTotals) break;
-      }
-    } catch {}
 
-    if (foundTotals) {
-      tips.push(
-        `💎 VIP TIP\n${home} vs ${away}\n• Start: ${commence}\n• Over ${line} Goals @ ${price}\n• 🧮 Implied chance (Over ${line}): ${impliedProbability(price)}`
-      );
-      continue;
-    }
+        // Analyze BEST over bet with intelligent selection
+        const overOptions: any[] = [];
+        
+        for (const bm of bookmakers) {
+          const totalsMarket = bm.markets?.find((m: any) => m.key === 'totals');
+          if (totalsMarket && totalsMarket.outcomes) {
+            for (const outcome of totalsMarket.outcomes) {
+              const name = (outcome.name || '').toLowerCase();
+              if (name.includes('over')) {
+                const line = parseFloat(outcome.point || 0);
+                const odds = parseFloat(outcome.price || 0);
+                
+                // Only consider Over 0.5, 1.5, 2.5, 3.5
+                if ([0.5, 1.5, 2.5, 3.5].includes(line) && odds > 0) {
+                  const probability = (1 / odds) * 100;
+                  
+                  // Calculate confidence score based on:
+                  // 1. High probability (>60% is good)
+                  // 2. Reasonable odds (1.3-2.0 range is ideal)
+                  // 3. Lower lines are safer
+                  let confidence = 0;
+                  
+                  if (probability >= 70) confidence += 40;
+                  else if (probability >= 60) confidence += 30;
+                  else if (probability >= 50) confidence += 20;
+                  
+                  if (odds >= 1.3 && odds <= 2.0) confidence += 30;
+                  else if (odds > 1.1 && odds < 2.5) confidence += 20;
+                  
+                  if (line === 0.5) confidence += 30;
+                  else if (line === 1.5) confidence += 20;
+                  else if (line === 2.5) confidence += 10;
+                  
+                  overOptions.push({
+                    line: line.toString(),
+                    odds: safeOddsToStr(odds),
+                    probability: `${Math.round(probability * 10) / 10}%`,
+                    recommendation: `Over ${line}`,
+                    confidence: confidence,
+                    rawProb: probability
+                  });
+                }
+              }
+            }
+          }
+        }
 
-    let homeOdds = 'N/A';
-    let awayOdds = 'N/A';
-    try {
-      const bookmakers = game.bookmakers || [];
-      if (bookmakers.length > 0) {
-        const market = bookmakers[0].markets?.[0];
-        const outcomes = market?.outcomes || [];
-        if (outcomes.length >= 2) {
-          homeOdds = safeOddsToStr(outcomes[0].price || 'N/A');
-          awayOdds = safeOddsToStr(outcomes[1].price || 'N/A');
+        // Select best over bet by confidence score
+        if (overOptions.length > 0) {
+          overOptions.sort((a, b) => b.confidence - a.confidence);
+          bestOverBet = overOptions[0];
+          
+          // Add analysis text
+          if (bestOverBet.rawProb >= 70) {
+            bestOverBet.analysis = '🔥 High Confidence';
+          } else if (bestOverBet.rawProb >= 60) {
+            bestOverBet.analysis = '✅ Good Value';
+          } else {
+            bestOverBet.analysis = '⚠️ Moderate Risk';
+          }
         }
       }
+    } catch (error) {
+      logger.error(`Error parsing VIP tip: ${error}`);
+    }
+
+    // Format time nicely
+    let timeStr = commence;
+    try {
+      const matchTime = new Date(commence);
+      const timeOptions: Intl.DateTimeFormatOptions = {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'Africa/Lagos'
+      };
+      timeStr = matchTime.toLocaleString('en-US', timeOptions);
     } catch {}
 
-    tips.push(
-      `💎 VIP TIP\n${home} vs ${away}\n• Start: ${commence}\n• Odds — Home: ${homeOdds} | Away: ${awayOdds}\n• 🧮 Win Chances — ${home}: ${impliedProbability(homeOdds)} | ${away}: ${impliedProbability(awayOdds)}`
-    );
+    // Build comprehensive VIP tip
+    if (bestOverBet.recommendation !== 'N/A') {
+      tips.push(
+        `💎 VIP PREMIUM TIP\n\n⚽ ${home} vs ${away}\n📅 ${timeStr}\n\n` +
+        `🎯 WIN PROBABILITIES:\n` +
+        `• ${home}: ${homeWinPercent} (Odds: ${homeOdds})\n` +
+        `• Draw: ${drawPercent} (Odds: ${drawOdds})\n` +
+        `• ${away}: ${awayWinPercent} (Odds: ${awayOdds})\n\n` +
+        `🔥 RECOMMENDED BET:\n` +
+        `• ${bestOverBet.recommendation} Goals\n` +
+        `• Odds: ${bestOverBet.odds}\n` +
+        `• Probability: ${bestOverBet.probability}\n` +
+        `• ${bestOverBet.analysis || ''}\n\n` +
+        `💡 This bet offers the best value based on odds analysis!`
+      );
+    } else {
+      // Fallback if no over/under available
+      tips.push(
+        `💎 VIP PREMIUM TIP\n\n⚽ ${home} vs ${away}\n📅 ${timeStr}\n\n` +
+        `🎯 WIN PROBABILITIES:\n` +
+        `• ${home}: ${homeWinPercent} (Odds: ${homeOdds})\n` +
+        `• Draw: ${drawPercent} (Odds: ${drawOdds})\n` +
+        `• ${away}: ${awayWinPercent} (Odds: ${awayOdds})\n\n` +
+        `💡 ${homeWinPercent > awayWinPercent ? home + ' is favored to win' : away + ' is favored to win'}`
+      );
+    }
   }
 
   return tips.length > 0 ? tips : ['⚠️ VIP odds unavailable right now.'];
@@ -454,13 +692,18 @@ bot.command('vip', async (ctx) => {
     return;
   }
 
+  await ctx.reply('💎 Analyzing upcoming matches and calculating best bets...\n\n⏳ Please wait...');
+
   const vipList: string[] = await getVipTips();
   if (Array.isArray(vipList) && vipList.length > 0 && typeof vipList[0] === 'string' && vipList[0].startsWith('⚠️')) {
     await ctx.reply(vipList[0]);
     return;
   }
 
-  const vipMessage = '💎 PREMIUM VIP BETTING TIPS\n\n' + vipList.join('\n\n') + '\n\n⚠️ These probabilities are *implied* from odds, not guaranteed outcomes.';
+  const vipMessage = '🏆 VIP PREMIUM BETTING ANALYSIS\n\n' + 
+    vipList.join('\n\n' + '─'.repeat(40) + '\n\n') + 
+    '\n\n📊 Tips are based on odds analysis and probability calculations.\n⚠️ Always bet responsibly!';
+  
   await ctx.reply(vipMessage);
 });
 
@@ -814,7 +1057,7 @@ bot.command('crontest', async (ctx) => {
 // FIXED: Scheduled job - Send daily tips at 10:00 AM every day
 // For TESTING: Use '*/1 * * * *' to run every minute
 // For PRODUCTION: Use '0 10 * * *' for 10:00 AM daily
-const cronSchedule = '0 10 * * *';// const cronSchedule = '*/1 * * * *'; // Change this to '0 10 * * *' after testing
+const cronSchedule = '*/1 * * * *'; // Change this to '0 10 * * *' after testing
 
 const cronJob = cron.schedule(cronSchedule, async () => {
   const now = new Date();
