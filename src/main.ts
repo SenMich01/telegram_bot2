@@ -1005,7 +1005,7 @@ cron.schedule('* * * * *', async () => {
   const now = new Date();
   logger.info(`⏰ Cron job triggered at ${now.toLocaleString()}`);
   await sendDailyTips();
-}
+},
 {
   scheduled: true,
   timezone: "Africa/Lagos"
