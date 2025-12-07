@@ -996,11 +996,17 @@ bot.command('crontest', async (ctx) => {
 });
 
 // Scheduled job: Send daily tips at 10:00 AM
-cron.schedule('0 10 * * *', async () => {
+// cron.schedule('0 10 * * *', async () => {
+//   const now = new Date();
+//   logger.info(`⏰ Cron job triggered at ${now.toLocaleString()}`);
+//   await sendDailyTips();
+// },
+cron.schedule('* * * * *', async () => {
   const now = new Date();
   logger.info(`⏰ Cron job triggered at ${now.toLocaleString()}`);
   await sendDailyTips();
-}, {
+}
+{
   scheduled: true,
   timezone: "Africa/Lagos"
 });
